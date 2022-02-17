@@ -21,6 +21,7 @@ class PinThesongpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width=MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(gradient: gradient()),
       child: Scaffold(
@@ -83,7 +84,19 @@ class PinThesongpage extends StatelessWidget {
                       type: ArtworkType.AUDIO,
                       artworkBorder: BorderRadius.circular(5),
                     ),
-                    title: Text(temp[index].name ?? 'Unknown'),
+                    title: temp[index].name!.length>18?Text(
+                    temp[index].name!.substring(0,19),
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: width * 0.05,
+                        fontWeight: FontWeight.bold),
+                  ):Text(
+                    temp[index].name??'unknown',
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: width * 0.05,
+                        fontWeight: FontWeight.bold),
+                  ),
                     trailing: AddRemoveBtn(
                       builder1: () {
                         if (currentIndex != index) {

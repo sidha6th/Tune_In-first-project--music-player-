@@ -198,6 +198,7 @@ class Library extends StatelessWidget {
                                                 Provider.of<PlayerController>(
                                                     context,
                                                     listen: false);
+                                                    
                                             songNameForNotification = song.name;
                                             songImgForNotification = song.image;
                                             playerControllerInstance

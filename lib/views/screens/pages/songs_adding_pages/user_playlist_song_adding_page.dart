@@ -20,6 +20,8 @@ class Addsongpage extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
+    var width=MediaQuery.of(context).size.width;
+    //var height=MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(gradient: gradient()),
       child: Scaffold(
@@ -68,7 +70,20 @@ class Addsongpage extends StatelessWidget {
                         type: ArtworkType.AUDIO,
                         artworkBorder: BorderRadius.circular(5),
                       ),
-                      title: Text(remainingSongs.name ?? 'Unknown'),
+                      
+                      title: remainingSongs.name!.length>18?Text(
+                    remainingSongs.name!.substring(0,19),
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: width * 0.05,
+                        fontWeight: FontWeight.bold),
+                  ):Text(
+                    remainingSongs.name??'unknown',
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: width * 0.05,
+                        fontWeight: FontWeight.bold),
+                  ),
                       trailing: AddRemoveBtn(
                         builder1: () {
                           if (currentIndex != index) {

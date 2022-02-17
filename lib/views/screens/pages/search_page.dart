@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:tune_in/controller/provider.dart';
@@ -89,7 +90,8 @@ class _SearchpageState extends State<Searchpage> {
                                 search: true);
                           },
                           title: Text(
-                            songs.name!,
+                             songs.name!,
+                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(color: Colors.white),
                           ),
                           leading: QueryArtworkWidget(

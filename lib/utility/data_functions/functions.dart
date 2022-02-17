@@ -85,6 +85,7 @@ fetchSong({required bool accepted}) async {
         ModelAlbum(albumname: songs.albums, key: songs.key, image: songs.image);
     albumSongNotifier.value.add(albumdata);
   }
+  albumSongNotifier.value=albumSongNotifier.value.toSet().toList();
   albumSongNotifier.notifyListeners();
 }
 //========================= end of song fetch section=========================//

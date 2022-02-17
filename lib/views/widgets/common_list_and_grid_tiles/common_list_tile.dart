@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class Tile extends StatelessWidget {
@@ -52,17 +53,25 @@ class Tile extends StatelessWidget {
             title: playlist == true
                 ? Padding(
                     padding: EdgeInsets.only(left: width * 0.09),
-                    child: Text(
-                      title ?? 'Unknown',
-                      overflow: TextOverflow.ellipsis,
+                    child: title!.length>20?Marquee(
+                     text:  title ?? 'Unknown',
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.5),
                           fontSize: width * 0.05,
                           fontWeight: FontWeight.bold),
-                    ),
+                    ):Text(title??'unknown',style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: width * 0.05,
+                          fontWeight: FontWeight.bold),),
                   )
-                : Text(
-                    '$title$index',
+                : title!.length>20?Text(
+                    title!.substring(0,19),
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: width * 0.05,
+                        fontWeight: FontWeight.bold),
+                  ):Text(
+                    title??'unknown',
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
                         fontSize: width * 0.05,
