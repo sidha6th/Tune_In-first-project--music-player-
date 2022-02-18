@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,6 +10,7 @@ import 'package:tune_in/utility/db/db_model.dart';
 import 'package:tune_in/views/screens/pages/detailes_pages/user_playlist_songlist_page.dart';
 
 List<SongModel> queriedsong = [];
+List<AlbumModel> queriedalbum = [];
 final OnAudioQuery _audioQuery = OnAudioQuery();
 
 //============box==============//
@@ -54,11 +56,17 @@ fetchSong({required bool accepted}) async {
       allSongsNotifier.notifyListeners();
     }
   } else {
+    List <String>songname=[];
+    songname.clear();
     List<AllSongs> list = [];
+    list.clear();
     list.addAll(allSongBox.values);
-    for (var i = 0; i < queriedsong.length; i++) {
-      for (var j = 0; j < list.length; j++) {
-        if (queriedsong[i].title != list[i].name) {
+    for (var item in list) {
+      songname.add(item.name!);
+    }
+    var k=0;
+    for (var i = 0; i <queriedsong.length; i++) {
+        if (songname[k]!= queriedsong[i].title) {
           AllSongs songdata = AllSongs(
             name: queriedsong[i].title,
             songdata: queriedsong[i].data,
@@ -69,36 +77,40 @@ fetchSong({required bool accepted}) async {
           int _key = await allSongBox.add(songdata);
           songdata.key = _key;
           await allSongBox.put(songdata.key, songdata);
-        } else {
-          break;
+         
+        }else{
+           k++;
         }
-      }
     }
-    list.clear();
+    queriedsong.clear();
     allSongsNotifier.value.clear();
     allSongsNotifier.value.addAll(allSongBox.values);
     allSongsNotifier.notifyListeners();
   }
-  albumSongNotifier.value.clear();
-  for (var songs in allSongsNotifier.value) {
-    ModelAlbum albumdata =
-        ModelAlbum(albumname: songs.albums, key: songs.key, image: songs.image);
-    albumSongNotifier.value.add(albumdata);
-  }
-  albumSongNotifier.value=albumSongNotifier.value.toSet().toList();
-  albumSongNotifier.notifyListeners();
+  listtoalbums();
 }
 //========================= end of song fetch section=========================//
 
 //=============================================data functions=====================================================//
 
 //==============================album data function===========================//
-listtoalbums() {
-  albumSongNotifier.value.clear();
+listtoalbums(){
+  List<String?> albumName = [];
+  albumName.clear();
   for (var songs in allSongsNotifier.value) {
-    ModelAlbum albumdata =
-        ModelAlbum(albumname: songs.albums, key: songs.key, image: songs.image);
-    albumSongNotifier.value.add(albumdata);
+    albumName.add(songs.albums);
+  }
+  albumName = albumName.toSet().toList();
+  albumSongNotifier.value.clear();
+  int a = 0;
+  for (var i = 0; i < allSongsNotifier.value.length; i++) {
+    if (albumName[a] == allSongsNotifier.value[i].albums) {
+      ModelAlbum albumdata = ModelAlbum(
+          albumname: allSongsNotifier.value[i].albums,
+          image: allSongsNotifier.value[i].image);
+      albumSongNotifier.value.add(albumdata);
+      a++;
+    }
   }
   albumSongNotifier.notifyListeners();
 }
@@ -130,10 +142,12 @@ getRemainingPlaylist(int key) async {
     unUsedPlaylistKeys = allPlaylistkeys
         .where((item) => !usedplaylistkeys.contains(item))
         .toList();
-    if(unUsedPlaylistKeys.isNotEmpty){for (var item in unUsedPlaylistKeys) {
-      OnlyModelplaylist? playlist = allplaylist.get(item);
-      remainingPlaylists.add(playlist!);
-    }}
+    if (unUsedPlaylistKeys.isNotEmpty) {
+      for (var item in unUsedPlaylistKeys) {
+        OnlyModelplaylist? playlist = allplaylist.get(item);
+        remainingPlaylists.add(playlist!);
+      }
+    }
   }
   playlistNotifier.notifyListeners();
 }
@@ -318,7 +332,6 @@ getThePinnedSongs() {
       pinnedSongNotifier.notifyListeners();
     }
   }
- 
 }
 
 //================================== end of pinned song functions===========================//
@@ -342,6 +355,6 @@ clearalldata() async {
   albumSongNotifier.notifyListeners();
   pinnedSongNotifier.notifyListeners();
   playlistSongsNotifier.notifyListeners();
-  isplayed.value=false;
+  isplayed.value = false;
 }
 //=============================end of reset the app function=====================//

@@ -174,14 +174,22 @@ class PlayerController extends ChangeNotifier {
   Duration currentPosition = const Duration(seconds: 0);
   Duration dur = const Duration(seconds: 0);
   double curr = 0;
+  ValueNotifier <int>dura=ValueNotifier(0);
   totalDuration() {
     assetsAudioPlayer.current.listen((event) {
       dur = event!.audio.duration;
+      dura.notifyListeners();
     });
-    return Text(
-      dur.toString().split('.')[0],
-      style: const TextStyle(color: Colors.white),
+    return ValueListenableBuilder(
+      valueListenable:dura,
+      builder: (BuildContext context, int something, _) {
+        return Text(
+          dur.toString().split('.')[0],
+          style: const TextStyle(color: Colors.white),
+        );
+      }
     );
+    
   }
 
   getDuration() {
@@ -246,7 +254,7 @@ Widget getTimer(BuildContext context) {
       min = min * 60;
       int totalseconds = hr + min;
       runtime(totalseconds);
-  
+
       Navigator.pop(context);
     },
     onNegativePressed: (context) {
@@ -257,8 +265,10 @@ Widget getTimer(BuildContext context) {
 
 runtime(int totalseconds) async {
   await Future.delayed(Duration(seconds: totalseconds), () async {
-    await assetsAudioPlayer.stop();
+    await assetsAudioPlayer.pause();
   });
+  sleepTimerIndicator.value = '00:00';
+  sleepTimerIndicator.notifyListeners();
 }
 
 //===================================================================================//

@@ -64,17 +64,12 @@ class Tile extends StatelessWidget {
                           fontSize: width * 0.05,
                           fontWeight: FontWeight.bold),),
                   )
-                : title!.length>20?Text(
-                    title!.substring(0,19),
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.bold),
-                  ):Text(
+                : Text(
                     title??'unknown',
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
-                        fontSize: width * 0.05,
+                        fontSize: width * 0.03,
                         fontWeight: FontWeight.bold),
                   ),
           ),

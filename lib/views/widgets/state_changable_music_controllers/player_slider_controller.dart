@@ -35,7 +35,9 @@ class _SliderclassState extends State<Sliderclass> {
         onChanged: (double newValue) {
           controller.changeToSeconds(controller.curr.toInt());
           controller.curr = newValue;
-          controller.notifyListeners();
+          setState(() {
+            
+          });
         },
       ),
     ),
