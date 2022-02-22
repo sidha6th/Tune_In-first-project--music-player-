@@ -46,6 +46,11 @@ int? songImgForNotification;
 //its for update ui with currespods to the current songs changes//
 LoopMode loop = LoopMode.playlist;
 
+
+//
+List<String> currespondingPlaylistSongPath = [];
+List<String> pinnedsongpaths = [];
+//
 //==================================provider class starts from here======================================//
 class PlayerController extends ChangeNotifier {
   bool isplaying = false;
@@ -295,6 +300,7 @@ pinSongFromNowplaying(BuildContext context) async {
   final playerControllerIntstance =
       Provider.of<PlayerController>(context, listen: false);
   playerControllerIntstance.listenEverything();
+  pinnedSongNotifier.notifyListeners();
 }
 
 //===========unpinning songs from the now playing functions===============//
@@ -320,5 +326,6 @@ unPinSongFromNowplaying(BuildContext context) async {
   final playerControllerIntstance =
       Provider.of<PlayerController>(context, listen: false);
   playerControllerIntstance.listenEverything();
+  pinnedSongNotifier.notifyListeners();
 }
 //==================================================================================//

@@ -89,7 +89,7 @@ class Playlist extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     OnlyModelplaylist playlist = values[index];
                     return InkWell(
-                        onDoubleTap: () async {
+                        onLongPress: () async {
                           return await showDialog(
                               context: context,
                               builder: (ctx) {

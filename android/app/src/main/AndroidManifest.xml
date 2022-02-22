@@ -2,6 +2,7 @@
     package="com.example.tune_in">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
    <application
         android:label="Tune"
         android:name="${applicationName}"

@@ -47,7 +47,7 @@ showdialoge(
                             ElevatedButton(
                               child: const Text('create'),
                               onPressed: () {
-                               if(playlistcreation.text.isNotEmpty){ addplaylist(
+                               if(playlistcreation.text.toString().trim().isNotEmpty){ addplaylist(
                                     playlistname: playlistcreation.text);
                                 Navigator.pop(ctx);
                                 ScaffoldMessenger.of(ctx)
@@ -64,7 +64,6 @@ showdialoge(
                         playlist == true
                             ? ListTile(
                                 onTap: () {
-                                  //addToPinned();
                                   Navigator.pop(ctx);
                                   ScaffoldMessenger.of(ctx)
                                       .showSnackBar(const SnackBar(
@@ -115,7 +114,6 @@ showdialoge(
                           ElevatedButton(
                             child: const Text('Yes'),
                             onPressed: () {
-                              // deletesong();
                               Navigator.pop(ctx);
                               ScaffoldMessenger.of(ctx)
                                   .showSnackBar(const SnackBar(

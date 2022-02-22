@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 import 'package:tune_in/controller/provider.dart';
 import 'package:tune_in/utility/data_functions/functions.dart';
 import 'package:tune_in/utility/db/db_model.dart';
 import 'package:tune_in/views/screens/pages/songs_adding_pages/user_playlist_song_adding_page.dart';
 import 'package:tune_in/views/widgets/common_designs.dart';
 import 'package:tune_in/views/widgets/state_changable_music_controllers/animating_add_remove_button.dart';
-
 
 List<AllSongs> tempPinning = [];
 
@@ -21,7 +21,7 @@ class PinThesongpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width=MediaQuery.of(context).size.width;
+    var width = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(gradient: gradient()),
       child: Scaffold(
@@ -45,6 +45,11 @@ class PinThesongpage extends StatelessWidget {
                   currentIcon = add;
                   currentIndex = -1;
                   Navigator.pop(context);
+
+                  pinnedPlaylist.clear();
+                  final playerControllerInstance =
+                      Provider.of<PlayerController>(context, listen: false);
+                  playerControllerInstance.getPinnedSongsPaths(pinnedsongpaths);
                 },
                 child: const Text('save'))
           ],
@@ -77,26 +82,28 @@ class PinThesongpage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: const Image(
                             width: 50,
-                            image: AssetImage(
-                                'assets/images/DefaultMusicImg.png'),
+                            image:
+                                AssetImage('assets/images/DefaultMusicImg.png'),
                           )),
                       id: temp[index].image!,
                       type: ArtworkType.AUDIO,
                       artworkBorder: BorderRadius.circular(5),
                     ),
-                    title: temp[index].name!.length>18?Text(
-                    temp[index].name!.substring(0,19),
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.bold),
-                  ):Text(
-                    temp[index].name??'unknown',
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.bold),
-                  ),
+                    title: temp[index].name!.length > 24
+                        ? Text(
+                            temp[index].name!.substring(0, 24),
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontSize: width * 0.04,
+                                fontWeight: FontWeight.w200),
+                          )
+                        : Text(
+                            temp[index].name ?? 'unknown',
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontSize: width * 0.04,
+                                fontWeight: FontWeight.w200),
+                          ),
                     trailing: AddRemoveBtn(
                       builder1: () {
                         if (currentIndex != index) {
@@ -112,7 +119,7 @@ class PinThesongpage extends StatelessWidget {
                           currentIcon = remove;
                           currentIndex = index;
                         } else {
-                          unPinTheSong(temp[index].key!, temp[index]);
+                          tempPinning.removeAt(index);
                           currentIndex = -1;
                           currentIcon = add;
                         }

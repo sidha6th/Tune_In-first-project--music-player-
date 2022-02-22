@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tune_in/controller/provider.dart';
 import 'package:tune_in/utility/data_functions/functions.dart';
+import 'package:tune_in/views/screens/pages/detailes_pages/about_page.dart';
 import 'package:tune_in/views/screens/temp_screens/intro_screen.dart';
 
 
@@ -47,14 +48,19 @@ class Settings extends StatelessWidget {
             'Version',
             style: TextStyle(fontSize: 19, color: Colors.white),
           ),
-          trailing: Text('V 0.01'),
+          trailing: Text('V 1.0.0'),
         ),
-       const ListTile(
-          leading: Icon(
+        ListTile(
+         onTap: (){
+           Navigator.push(context, MaterialPageRoute(builder: (ctx){
+             return const AboutPage();
+           }),);
+         },
+          leading:const Icon(
             Icons.info_outline,
             color: Colors.white,
           ),
-          title: Text(
+          title:const Text(
             'About',
             style: TextStyle(fontSize: 19, color: Colors.white),
           ),

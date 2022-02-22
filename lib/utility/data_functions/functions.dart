@@ -56,7 +56,7 @@ fetchSong({required bool accepted}) async {
       allSongsNotifier.notifyListeners();
     }
   } else {
-    List <String>songname=[];
+    List<String> songname = [];
     songname.clear();
     List<AllSongs> list = [];
     list.clear();
@@ -64,37 +64,36 @@ fetchSong({required bool accepted}) async {
     for (var item in list) {
       songname.add(item.name!);
     }
-    var k=0;
-    for (var i = 0; i <queriedsong.length; i++) {
-        if (songname[k]!= queriedsong[i].title) {
-          AllSongs songdata = AllSongs(
-            name: queriedsong[i].title,
-            songdata: queriedsong[i].data,
-            duration: queriedsong[i].duration,
-            albums: queriedsong[i].album,
-            image: queriedsong[i].id,
-          );
-          int _key = await allSongBox.add(songdata);
-          songdata.key = _key;
-          await allSongBox.put(songdata.key, songdata);
-         
-        }else{
-           k++;
-        }
+    var k = 0;
+    for (var i = 0; i < queriedsong.length; i++) {
+      if (songname[k] != queriedsong[i].title) {
+        AllSongs songdata = AllSongs(
+          name: queriedsong[i].title,
+          songdata: queriedsong[i].data,
+          duration: queriedsong[i].duration,
+          albums: queriedsong[i].album,
+          image: queriedsong[i].id,
+        );
+        int _key = await allSongBox.add(songdata);
+        songdata.key = _key;
+        await allSongBox.put(songdata.key, songdata);
+      } else {
+        k++;
+      }
     }
     queriedsong.clear();
     allSongsNotifier.value.clear();
     allSongsNotifier.value.addAll(allSongBox.values);
     allSongsNotifier.notifyListeners();
   }
-  listtoalbums();
+  await listtoalbums();
 }
 //========================= end of song fetch section=========================//
 
 //=============================================data functions=====================================================//
 
 //==============================album data function===========================//
-listtoalbums(){
+listtoalbums() {
   List<String?> albumName = [];
   albumName.clear();
   for (var songs in allSongsNotifier.value) {
@@ -313,9 +312,12 @@ unPinTheSong(int key, AllSongs data) async {
   await allsongbox.put(key, pinnedSong);
   allSongsNotifier.value.clear();
   allSongsNotifier.value.addAll(allsongbox.values);
-  debugPrint('the song pinned is ' + data.ispinned.toString());
   allSongsNotifier.notifyListeners();
   await getThePinnedSongs();
+  pinnedsongpaths.clear();
+  for (var songpath in pinnedSongNotifier.value) {
+    pinnedsongpaths.add(songpath.songdata!);
+  }
 }
 
 getThePinnedSongs() {

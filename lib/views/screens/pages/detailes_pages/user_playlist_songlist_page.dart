@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:tune_in/controller/provider.dart';
 import 'package:tune_in/utility/data_functions/functions.dart';
@@ -10,9 +11,6 @@ import 'package:tune_in/views/widgets/common_designs.dart';
 import 'package:tune_in/views/widgets/common_list_and_grid_tiles/common_list_tile.dart';
 import 'package:tune_in/views/widgets/miniplayer_widget/front_side_miniplyer.dart';
 import 'package:tune_in/views/widgets/state_changable_music_controllers/animating_add_remove_button.dart';
-
-
-List<String> currespondingPlaylistSongPath = [];
 
 class Userplaylistsong extends StatelessWidget {
   const Userplaylistsong(
@@ -76,49 +74,44 @@ class Userplaylistsong extends StatelessWidget {
                                   return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 20),
-                                      child: Dismissible(
-                                          confirmDismiss: (direction) {
-                                            return showDialog(
-                                                context: context,
-                                                builder: (ctx) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'Are You sure want to remove'),
-                                                    actions: [
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(false);
-                                                          },
-                                                          child: const Text(
-                                                              'No',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .blueGrey))),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          removeSongFromUserPlaylist(
-                                                              currespondingPlaylistsong[
-                                                                      index]
-                                                                  .currespondingSongDeletingkey);
-                                                          Navigator.of(context)
-                                                              .pop(true);
-                                                        },
-                                                        child: const Text(
-                                                          'Yes',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.red),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                          key: ValueKey(index),
+                                      child: Slidable(
+                                          endActionPane: ActionPane(
+                                              motion: const BehindMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) async {
+                                                    currespondingPlaylistSongPath
+                                                        .clear();
+                                                    await removeSongFromUserPlaylist(
+                                                        currespondingPlaylistsong[
+                                                                index]
+                                                            .currespondingSongDeletingkey);
+                                                    for (var item
+                                                        in currespondingPlaylistsong) {
+                                                      currespondingPlaylistSongPath
+                                                          .add(item.songdata!);
+                                                      final playerControllerInstance =
+                                                          Provider.of<
+                                                                  PlayerController>(
+                                                              context,
+                                                              listen: false);
+                                                      playerControllerInstance
+                                                          .getPlaylistSongsPaths(
+                                                              currespondingPlaylistSongPath);
+                                                    }
+                                                  },
+                                                  backgroundColor:
+                                                      const Color(0xFFFFFFFF)
+                                                          .withOpacity(0.5),
+                                                  foregroundColor: Colors.red,
+                                                  icon: Icons.delete,
+                                                  label: 'Remove',
+                                                ),
+                                              ]),
                                           child: Tile(
                                               builder: () {
+                                                currespondingPlaylistSongPath
+                                                    .clear();
                                                 for (var item
                                                     in currespondingPlaylistsong) {
                                                   currespondingPlaylistSongPath

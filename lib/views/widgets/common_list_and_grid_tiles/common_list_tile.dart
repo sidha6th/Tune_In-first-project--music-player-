@@ -26,7 +26,7 @@ class Tile extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
             color: Colors.black54.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(10)),
+            borderRadius: BorderRadius.circular(5)),
         child: Bounce(
           duration: const Duration(milliseconds: 50),
           onPressed: () => builder(),
@@ -58,11 +58,11 @@ class Tile extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.5),
                           fontSize: width * 0.05,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w200),
                     ):Text(title??'unknown',style: TextStyle(
                           color: Colors.white.withOpacity(0.5),
                           fontSize: width * 0.05,
-                          fontWeight: FontWeight.bold),),
+                          fontWeight: FontWeight.w200),),
                   )
                 : Text(
                     title??'unknown',
@@ -70,7 +70,7 @@ class Tile extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
                         fontSize: width * 0.03,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w200),
                   ),
           ),
         ));
